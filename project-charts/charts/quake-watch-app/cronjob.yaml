@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "mychart.fullname" . }}-cronjob
+  labels:
+    {{- include "mychart.labels" . | nindent 4 }}
+spec:
+  schedule: "{{ .Values.cronJob.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: {{ .Values.cronJob.restartPolicy }}
+          containers:
+            - name: {{ .Values.cronJob.name }}
+              image: {{ .Values.cronJob.image }}
+              command:
+                {{- toYaml .Values.cronJob.command | nindent 16 }}
+              volumeMounts:
+                - name: {{ .Values.persistentVolumeClaim.name }}
+                  mountPath: {{ .Values.persistentVolume.mountPath }}
+          volumes:
+            - name: {{ .Values.persistentVolumeClaim.name }}
+              persistentVolumeClaim:
+                claimName: {{ .Values.persistentVolumeClaim.name }}

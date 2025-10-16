@@ -88,3 +88,11 @@ env:
   FEATURE_FLAG: "false"
   HOST_URL: "0.0.0.0"
   HOST_PORT: "5000"
+
+serviceMonitor:
+  name: quake-watch-service-monitor
+  path: /metrics
+  interval: 30s
+  namespaceSelector:
+    matchNames: quakewatch-phase3
+
