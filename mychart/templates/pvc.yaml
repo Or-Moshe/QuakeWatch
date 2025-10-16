@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.persistentVolumeClaim.name }}
   labels:
-    {{- include "mychart.labels" . | nindent 4 }}
+    app: {{ .Values.app }}
 spec:
   accessModes:
     {{- range .Values.persistentVolumeClaim.accessModes }}

@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: {{ include "mychart.fullname" . }}
   labels:
-    {{- include "mychart.labels" . | nindent 4 }}
+    app: {{ .Values.app }}
+
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -11,7 +12,7 @@ spec:
 
   selector:
     matchLabels:
-      {{- include "mychart.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.app }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -19,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "mychart.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.app }}
 
     spec:
       serviceAccountName: {{ include "mychart.serviceAccountName" . }}
@@ -47,17 +48,17 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: {{ .Values.service.protocol }}
 
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.livenessProbe.httpGet.path }}
-              port: {{ .Values.livenessProbe.httpGet.port }}
-              periodSeconds: {{ .Values.livenessProbe.httpGet.periodSeconds }}
+          #livenessProbe:
+          #  httpGet:
+          #    path: {{ .Values.livenessProbe.httpGet.path }}
+          #    port: {{ .Values.livenessProbe.httpGet.port }}
+          #    periodSeconds: {{ .Values.livenessProbe.httpGet.periodSeconds }}
 
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.readinessProbe.httpGet.path }}
-              port: {{ .Values.readinessProbe.httpGet.port }}
-              periodSeconds: {{ .Values.readinessProbe.httpGet.periodSeconds }}
+          #readinessProbe:
+          #  httpGet:
+          #    path: {{ .Values.readinessProbe.httpGet.path }}
+          #    port: {{ .Values.readinessProbe.httpGet.port }}
+          #    periodSeconds: {{ .Values.readinessProbe.httpGet.periodSeconds }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 

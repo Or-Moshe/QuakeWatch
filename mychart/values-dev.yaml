@@ -1,4 +1,5 @@
-replicaCount: 1
+replicaCount: 2
+app: quake-watch-phase3
 
 image:
   repository: ormoshe/quake-watch-phase3
