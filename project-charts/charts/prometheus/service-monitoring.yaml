@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Values.serviceMonitor.name }}
+  namespace: monitoring           # Where Prometheus is deployed
+  labels:
+    release: prometheus           # Must match Prometheus release label
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app }}       # Must match the Service labels
+  namespaceSelector:
+    matchNames:
+      - quakewatch-phase3               # Namespace of your app
+  endpoints:
+    - port: {{ .Values.service.name }}  # Port name from your Service
+      path: {{ .Values.serviceMonitor.path }}             # Metrics endpoint
+      interval: {{ .Values.serviceMonitor.interval }}
