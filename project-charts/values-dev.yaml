@@ -1,4 +1,5 @@
-replicaCount: 1
+replicaCount: 2
+app: quake-watch-phase3
 
 image:
   repository: ormoshe/quake-watch-phase3
@@ -69,6 +70,17 @@ cronJob:
         exit 1
       fi
 
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+    periodSeconds: 30
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+    periodSeconds: 30
 
 env:
   APP_ENV: "dev"
@@ -76,3 +88,11 @@ env:
   FEATURE_FLAG: "false"
   HOST_URL: "0.0.0.0"
   HOST_PORT: "5000"
+
+serviceMonitor:
+  name: quake-watch-service-monitor
+  path: /metrics
+  interval: 30s
+  namespaceSelector:
+    matchNames: quakewatch-phase3
+

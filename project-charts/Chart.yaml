@@ -1,15 +1,15 @@
 apiVersion: v2
-name: quakewatch-phase3
+name: project-charts
 description: A Helm chart for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
-# Application project-charts-old are a collection of templates that can be packaged into versioned archives
+# Application charts are a collection of templates that can be packaged into versioned archives
 # to be deployed.
 #
-# Library project-charts-old provide useful utilities or functions for the chart developer. They're included as
-# a dependency of application project-charts-old to inject those utilities and functions into the rendering
-# pipeline. Library project-charts-old do not define any templates and therefore cannot be deployed.
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
@@ -22,3 +22,11 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
+
+dependencies:
+  - name: quake-watch-app
+    version: 0.1.0
+    repository: "file://charts/quake-watch-app"
+  - name: prometheus
+    version: 0.1.0
+    repository: "file://charts/prometheus"

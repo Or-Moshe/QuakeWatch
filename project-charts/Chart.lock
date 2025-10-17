@@ -1,0 +1,9 @@
+dependencies:
+- name: quake-watch-app
+  repository: file://charts/quake-watch-app
+  version: 0.1.0
+- name: prometheus
+  repository: file://charts/prometheus
+  version: 0.1.0
+digest: sha256:93666e4a0e13022ce623f3344f1e30f2f3a41f2b54d7861d696d276c1f78d703
+generated: "2025-10-16T19:41:09.051630769+03:00"
