@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "mychart.fullname" . }}-cronjob
+  name: {{ .Values.app }}-cronjob
   labels:
-    {{- include "mychart.labels" . | nindent 4 }}
+    {{- include "quake-watch-app.labels" . | nindent 4 }}
 spec:
   schedule: "{{ .Values.cronJob.schedule }}"
   jobTemplate:
