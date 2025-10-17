@@ -37,7 +37,7 @@ spec:
 
           envFrom:
             - configMapRef:
-                name: {{ include "quake-watch-app.fullname" . }}-config
+                name: {{ .Values.app }}-config
           volumeMounts:
             - name: {{ .Values.persistentVolume.name }}
               mountPath: {{ .Values.persistentVolume.mountPath }}
