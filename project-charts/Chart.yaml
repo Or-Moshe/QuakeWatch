@@ -24,9 +24,9 @@ version: 0.1.0
 appVersion: "1.16.0"
 
 dependencies:
-  - name: quake-watch-app
+  - name: quakewatch
     version: 0.1.0
-    repository: "file://charts/quake-watch-app"
+    repository: "file://charts/quakewatch"
   - name: prometheus
     version: 0.1.0
     repository: "file://charts/prometheus"

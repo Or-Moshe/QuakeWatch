@@ -3,7 +3,11 @@ kind: CronJob
 metadata:
   name: {{ .Values.app }}-cronjob
   labels:
-    {{- include "quake-watch-app.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.app }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+
 spec:
   schedule: "{{ .Values.cronJob.schedule }}"
   jobTemplate:
@@ -14,8 +18,10 @@ spec:
           containers:
             - name: {{ .Values.cronJob.name }}
               image: {{ .Values.cronJob.image }}
+              {{- if .Values.cronJob.command }}
               command:
                 {{- toYaml .Values.cronJob.command | nindent 16 }}
+              {{- end }}
               volumeMounts:
                 - name: {{ .Values.persistentVolumeClaim.name }}
                   mountPath: {{ .Values.persistentVolume.mountPath }}
