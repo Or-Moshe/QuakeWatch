@@ -1,6 +1,9 @@
 name: matrix qa
 
 on:
+  push:
+    branches:
+      - qa
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
