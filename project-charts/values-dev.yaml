@@ -1,5 +1,5 @@
 replicaCount: 2
-app: quake-watch-phase3
+app: quakewatch
 
 image:
   repository: ormoshe/quake-watch-phase3
@@ -7,7 +7,7 @@ image:
   pullPolicy: Always
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 5000
   targetPort: 5000
   protocol: TCP
@@ -22,7 +22,7 @@ resources:
     memory: 256Mi
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 5
   targetCPUUtilizationPercentage: 50
@@ -88,6 +88,8 @@ env:
   FEATURE_FLAG: "false"
   HOST_URL: "0.0.0.0"
   HOST_PORT: "5000"
+
+extraLabels: {}
 
 serviceMonitor:
   name: quake-watch-service-monitor
