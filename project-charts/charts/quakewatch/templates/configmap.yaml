@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  # ConfigMap name is based on your app value
+  name: {{ .Values.app }}-config
+  labels:
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+
+data:
+  APP_ENV: {{ .Values.env.APP_ENV | quote }}
+  LOG_LEVEL: {{ .Values.env.LOG_LEVEL | quote }}
+  FEATURE_FLAG: {{ .Values.env.FEATURE_FLAG | quote }}
+  HOST_URL: {{ .Values.env.HOST_URL | quote }}
+  HOST_PORT: {{ .Values.env.HOST_PORT | quote }}

@@ -3,7 +3,14 @@ kind: PersistentVolume
 metadata:
   name: {{ .Values.persistentVolume.name }}
   labels:
-    {{- include "mychart.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- with .Values.extraLabels }}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+
 spec:
   capacity:
     storage: {{ .Values.persistentVolume.capacity.storage }}
@@ -12,8 +19,8 @@ spec:
     - {{ . }}
     {{- end }}
   persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy }}
+
   {{- if .Values.persistentVolume.hostPath }}
   hostPath:
     path: {{ .Values.persistentVolume.hostPath.path }}
   {{- end }}
-  # Add other volume types (e.g., nfs, awsElasticBlockStore, gcePersistentDisk) as needed

@@ -1,0 +1,9 @@
+dependencies:
+- name: quakewatch
+  repository: file://charts/quakewatch
+  version: 0.1.0
+- name: prometheus
+  repository: file://charts/prometheus
+  version: 0.1.0
+digest: sha256:e1355db2f69ff3e189ece286add324f4ae069fd1aca78f010644b38e713a4d7f
+generated: "2025-10-20T20:35:34.893918342+03:00"

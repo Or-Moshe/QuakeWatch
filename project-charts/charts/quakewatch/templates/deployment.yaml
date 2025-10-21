@@ -1,9 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mychart.fullname" . }}
+  name: {{ .Values.app }}
   labels:
-    {{- include "mychart.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.app }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ .Values.app }}
+
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -11,7 +14,7 @@ spec:
 
   selector:
     matchLabels:
-      {{- include "mychart.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.app }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -19,10 +22,11 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "mychart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ .Values.app }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{ .Values.app }}
 
     spec:
-      serviceAccountName: {{ include "mychart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
@@ -37,7 +41,7 @@ spec:
 
           envFrom:
             - configMapRef:
-                name: {{ include "mychart.fullname" . }}-config
+                name: {{ .Values.app }}-config
           volumeMounts:
             - name: {{ .Values.persistentVolume.name }}
               mountPath: {{ .Values.persistentVolume.mountPath }}
@@ -47,17 +51,17 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: {{ .Values.service.protocol }}
 
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.livenessProbe.httpGet.path }}
-              port: {{ .Values.livenessProbe.httpGet.port }}
-              periodSeconds: {{ .Values.livenessProbe.httpGet.periodSeconds }}
+          #livenessProbe:
+          #  httpGet:
+          #    path: {{ .Values.livenessProbe.httpGet.path }}
+          #    port: {{ .Values.livenessProbe.httpGet.port }}
+          #    periodSeconds: {{ .Values.livenessProbe.httpGet.periodSeconds }}
 
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.readinessProbe.httpGet.path }}
-              port: {{ .Values.readinessProbe.httpGet.port }}
-              periodSeconds: {{ .Values.readinessProbe.httpGet.periodSeconds }}
+          #readinessProbe:
+          #  httpGet:
+          #    path: {{ .Values.readinessProbe.httpGet.path }}
+          #    port: {{ .Values.readinessProbe.httpGet.port }}
+          #    periodSeconds: {{ .Values.readinessProbe.httpGet.periodSeconds }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
