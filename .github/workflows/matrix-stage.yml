@@ -1,17 +1,17 @@
-name: matrix qa
+name: matrix stage
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
-      - dev
+      - stage
   workflow_dispatch:
 
 jobs:
   TEST:
-    name: Build & Test For QA
+    name: Build & Test For STAGE
     runs-on: ${{ matrix.os }}
-    environment: QA
+    environment: STAGE
     
     strategy:
       matrix:
@@ -40,7 +40,7 @@ jobs:
         run: |
           pylint *.py || true
   all-tests-passed:
-    name: Build & Test For QA succeed
+    name: Build & Test For STAGE succeed
     runs-on: ubuntu-latest
     needs: TEST
     if: always()
