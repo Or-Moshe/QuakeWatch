@@ -75,3 +75,69 @@ The project includes a custom filter `timestamp_to_str` that converts epoch time
 
 - **SSL Warning:** You might see a warning regarding LibreSSL when using urllib3. This is informational and does not affect the functionality of the application.
 - **Matplotlib Backend:** The application forces Matplotlib to use the `Agg` backend for headless rendering. Ensure this setting is applied before any Matplotlib imports to avoid GUI-related errors.
+
+
+## phase4
+**creating an helm chart release:**
+   1. go to chart folder:
+        cd project-charts
+    
+   2. ```bash
+      helm upgrade -i quakewatch -f values-dev.yaml ./
+      ```
+**installing ArgoCD**
+1. create new namespace:
+    ```bash
+      kubectl create namespace argocd
+    ```
+2. installation and getting password:
+    ```bash
+    kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" -n argocd| base64 -d; echo
+    [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String((kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}')))
+    ```
+3. running:
+    ```bash
+    kubectl port-forward svc/argocd-server -n argocd 8080:443
+    https://localhost:8080/applications
+    ```
+
+**Monitoring using prometheus and grafana**
+
+installation:
+```bash
+git clone https://github.com/EduardUsatchev/advanced-devops.git
+cd advanced-devops/monitoring/k8s-setup
+minikube start --driver=docker
+1. kubectl apply -f monitoring/namespace.yml
+2. helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+3. helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
+4. helm upgrade -i prometheus prometheus-community/prometheus --namespace monitoring -f prometheus/values.yml
+5. kubectl apply -f monitoring/grafana/config.yml
+6. helm repo add grafana https://grafana.github.io/helm-charts
+7. helm install grafana --namespace monitoring grafana/grafana --set rbac.pspEnabled=false
+```
+
+running:
+```bash
+8. kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+9. kubectl -n monitoring port-forward svc/grafana 3000:80 
+10. kubectl -n monitoring port-forward svc/prometheus-prometheus-node-exporter 9100:9100 
+11. kubectl -n monitoring port-forward svc/prometheus-prometheus-pushgateway 9091:9091 
+12. kubectl -n monitoring port-forward svc/prometheus-server 9090:80 
+13: Sending metrics to pushgateway: echo "some_metric 52" | curl --data-binary @- http://localhost:9091/metrics/job/some_job/a/b
+14. helm install my-release oci://registry-1.docker.io/bitnamicharts/redis --set metrics.enabled=true
+15. kubectl port-forward svc/my-release-redis-metrics 9121:9121
+16. kubectl -n monitoring port-forward svc/prometheus-alertmanager 9093:9093
+17. kubectl -n monitoring port-forward svc/prometheus-prometheus-pushgateway 9091:9091
+```
+
+**Grafana**
+
+prometheus server is running on port 80 so configure the connection of data source as:
+http://prometheus-server:80
+
+**Alert Manager**
+to add new rule you should edit the config map:
+```commandline
+ kubectl edit configmap prometheus-server -n monitoring
+```
