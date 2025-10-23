@@ -3,7 +3,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.persistentVolumeClaim.name }}
   labels:
-    app: {{ .Values.app }}
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
     {{- range .Values.persistentVolumeClaim.accessModes }}
@@ -12,6 +15,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistentVolumeClaim.size }}
-  {{- if .Values.persistentVolumeClaim.storageClass }}
-  storageClassName: {{ .Values.persistentVolumeClaim.storageClass }}
-  {{- end }}
+  storageClassName: ""
