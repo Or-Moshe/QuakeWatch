@@ -36,7 +36,8 @@ persistentVolume:
     path: "/app/logs"
   mountPath: "/app/logs"
   capacity:
-    storage: 2Gi
+    storage: 8Gi
+  storageClass: ""
 
 persistentVolumeClaim:
   enabled: true
