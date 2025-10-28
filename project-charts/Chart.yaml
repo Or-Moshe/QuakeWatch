@@ -28,6 +28,3 @@ dependencies:
   - name: quakewatch
     version: 0.1.0
     repository: "file://charts/quakewatch"
-  - name: prometheus
-    version: 0.1.0
-    repository: "file://charts/prometheus"
