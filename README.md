@@ -18,6 +18,25 @@
 
 ```
 QuakeWatch/
+├── project-charts          # helm charts
+│   │   ├──Chart.yaml
+│   │   ├──values.yaml
+│   │   ├──values-dev.yaml
+│   │   ├──values-prod.yaml
+│   │   ├──values-stage.yaml
+│   │   └── charts
+│   │   │   └── quakewatch
+│   │   │   │   ├──Chart.yaml
+│   │   │   │   ├──values.yaml
+│   │   │   │   └── templates
+│   │   │   │   │   ├── configmap.yaml
+│   │   │   │   │   ├── cronjob.yaml
+│   │   │   │   │   ├── development.yaml
+│   │   │   │   │   ├── hpa.yaml
+│   │   │   │   │   ├── ingress.yaml
+│   │   │   │   │   ├── pv.yaml
+│   │   │   │   │   ├── pvc.yaml
+│   │   │   │   │   ├── service.yaml  
 ├── app.py                  # Application factory and entry point
 ├── dashboard.py            # Blueprint & route definitions using OOP style
 ├── utils.py                # Helper functions and custom Jinja2 filters
@@ -78,14 +97,22 @@ The project includes a custom filter `timestamp_to_str` that converts epoch time
 
 
 ## phase4
-**creating an helm chart release:**
+
+**run the application**
+1. go to the cluster of your app.
+2. run:
+```commandline
+kubectl port-forward svc/quake-watch-phase3-svc {YOUR_AVAILABLE_PORT}:5000
+```
+
+**creating a helm chart release:**
    1. go to chart folder:
         cd project-charts
     
    2. ```bash
       helm upgrade -i quakewatch -f values-dev.yaml ./
       ```
-**installing ArgoCD**
+**Monitoring using ArgoCD**
 1. create new namespace:
     ```bash
       kubectl create namespace argocd
