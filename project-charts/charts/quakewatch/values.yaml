@@ -37,7 +37,7 @@ persistentVolume:
   mountPath: "/app/logs"
   capacity:
     storage: 8Gi
-  storageClass: ""
+  storageClass: "standard"
 
 persistentVolumeClaim:
   enabled: true
@@ -45,7 +45,7 @@ persistentVolumeClaim:
   accessModes:
     - ReadWriteOnce
   size: 8Gi
-  storageClass: ""
+  storageClass: "standard"
 
 cronJob:
   schedule: "0 0 * * *"
