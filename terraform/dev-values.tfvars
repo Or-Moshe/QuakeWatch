@@ -1,0 +1,11 @@
+instance_type = "t2.small"
+instance_tag = "quakewatch-server"
+security_group_name = "quakewatch-sg"
+security_group_allowed_ssh_cidr = ["0.0.0.0/0"]
+security_group_allowed_http_cidr = ["0.0.0.0/0"]
+security_group_ingress_SSH_from_port = 22
+security_group_ingress_SSH_to_port = 22
+security_group_ingress_HTTP_from_port = 80
+security_group_ingress_HTTP_to_port = 80
+security_group_ingress_HTTPS_from_port = 443
+security_group_ingress_HTTPS_to_port = 443

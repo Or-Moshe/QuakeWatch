@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 spec:
-  storageClassName: {{ .Values.persistentVolume.storageClass }}
+  storageClassName: {{ .Values.persistentVolume.storageClass | quote }}
   capacity:
     storage: {{ .Values.persistentVolume.capacity.storage }}
   accessModes:
