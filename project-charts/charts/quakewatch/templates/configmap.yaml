@@ -4,7 +4,7 @@ metadata:
   # ConfigMap name is based on your app value
   name: {{ .Values.app }}-config
   labels:
-    app.kubernetes.io/name: {{ .Values.name }}
+#    app.kubernetes.io/name: {{ .Values.name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
