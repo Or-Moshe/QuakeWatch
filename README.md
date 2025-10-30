@@ -18,6 +18,9 @@
 
 ```
 QuakeWatch/
+├── monitoring
+│   │   └── argocd
+│   │   │   ├──quakewatch-dev.yaml
 ├── project-charts          # helm charts
 │   │   ├──Chart.yaml
 │   │   ├──values.yaml
